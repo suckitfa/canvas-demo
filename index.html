@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        #canvas {
+            background-color: antiquewhite;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="canvas">
+
+    </div>
+    <script>
+        function createTag(tagName, attributes) {
+            let elem = document.createElement(tagName);
+            for (let key in attributes) {
+                elem.style[key] = attributes[key];
+            }
+            return elem;
+        };
+        let painting = false;
+
+        let canvas = document.getElementById("canvas");
+        canvas.onmousedown = function(event) {
+            painting = true;
+            let x = event.clientX;
+            let y = event.clientY;
+            //注意这里是用js进行设置，
+            let div = createTag("div", {
+                "height": "6px",
+                "width": "6px",
+                "border-radius": "50%",
+                'background-color': "red",
+                "position": "absolute",
+                "left": `${x-3}px`,
+                "top": `${y-3}px`
+            });
+            canvas.appendChild(div);
+        };
+        // document.onmousedown = function(event) {
+        //     console.log("点击了哦我！");
+        //     console.log("x = " + event["clientX"]);
+        // }
+        document.onmousemove = function(event) {
+            if (painting) {
+                let x = event.clientX;
+                let y = event.clientY;
+                //注意这里是用js进行设置，
+                let div = createTag("div", {
+                    "height": "5px",
+                    "width": "5px",
+                    'background-color': "red",
+                    "position": "absolute",
+                    "left": `${x-3}px`,
+                    "top": `${y-3}px`
+                });
+                canvas.appendChild(div);
+            } else {
+
+            }
+        };
+        document.onmouseup = function(event) {
+            painting = false;
+        }
+    </script>
+</body>
+
+</html>
