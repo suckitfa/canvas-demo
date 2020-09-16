@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no,maximum-scale=1.0,minimum-scable=1.0">
     <style>
         #canvas {
             background-color: green;
@@ -61,7 +61,50 @@
             x: undefined,
             y: undefined
         }
-        canvas.onmousemove = function(event) {
+        //特性检测：并不关心设备，只关心是够支持该功能
+        function listenToUsers(){
+            if(document.body.ontouchstart!==undefined){
+                //说明是触屏设备
+                canvas.ontouchstart = function(event){
+                    let x = event.touches[0].clientX;
+                    let y = event.touches[0].clientY;
+                    if (usingEraser) { //开启
+                    if (using) {
+                        context.clearRect(x, y, 10 - 5, 10 - 5);
+                    }
+                } else { //没有开启橡皮擦的功能，就是在作画
+                    using = true;
+                    lastPoint = {
+                        "x": x,
+                        "y": y
+                        }
+                    }
+                }
+                canvas.ontouchmove = function(event){
+                    let x = event.touches[0].clientX;
+                    let y = event.touches[0].clientY;
+                    if (usingEraser) {
+                using = true;
+                context.clearRect(x, y, 10 - 5, 10 - 5);
+            } else {
+                if (using) {
+                    var newPoint = {
+                        "x": x,
+                        "y": y
+                    };
+                    drawLine(lastPoint.x, lastPoint.y, newPoint.x, newPoint.y);
+
+                    //更新现在的最后一个点!!!!
+                    lastPoint = newPoint;
+                }
+            }
+                }
+                canvas.ontouchend = function(){
+                    using = false;
+                }
+            }else{
+                //非触屏设备
+                canvas.onmousemove = function(event) {
             var x = event.clientX;
             var y = event.clientY;
             if (usingEraser) {
@@ -100,6 +143,9 @@
         canvas.onmouseup = function() {
             using = false;
         }
+            }
+        }
+        
 
         // 橡皮差功能开启
         var usingEraser = false;
@@ -107,6 +153,7 @@
             //点击两次就会取得相同的结果
             usingEraser = !usingEraser;
         }
+        listenToUsers();
     </script>
 </body>
 
