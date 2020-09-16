@@ -4,75 +4,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
+        #canvas {
+            background-color: green;
+            display: block;
+            /* height: 100vh; */
         }
         
-        #canvas {
-            background-color: antiquewhite;
-            height: 100vh;
+        button {
+            position: fixed;
+            left: 0;
+            bottom: 0;
         }
     </style>
 </head>
 
 <body>
-    <div id="canvas">
-
-    </div>
+    <canvas id="canvas">
+      
+  </canvas>
+    <button id="eraser">橡皮擦</button>
     <script>
-        function createTag(tagName, attributes) {
-            let elem = document.createElement(tagName);
-            for (let key in attributes) {
-                elem.style[key] = attributes[key];
-            }
-            return elem;
-        };
-        let painting = false;
+        var canvas = document.getElementById("canvas");
+        var context = canvas.getContext("2d");
+        setCanvasHeight();
+        //监听浏览器的窗口的宽，高
+        window.onresize = function() {
+            setCanvasHeight();
+        }
 
-        let canvas = document.getElementById("canvas");
-        canvas.onmousedown = function(event) {
-            painting = true;
-            let x = event.clientX;
-            let y = event.clientY;
-            //注意这里是用js进行设置，
-            let div = createTag("div", {
-                "height": "6px",
-                "width": "6px",
-                "border-radius": "50%",
-                'background-color': "red",
-                "position": "absolute",
-                "left": `${x-3}px`,
-                "top": `${y-3}px`
-            });
-            canvas.appendChild(div);
-        };
-        // document.onmousedown = function(event) {
-        //     console.log("点击了哦我！");
-        //     console.log("x = " + event["clientX"]);
-        // }
-        document.onmousemove = function(event) {
-            if (painting) {
-                let x = event.clientX;
-                let y = event.clientY;
-                //注意这里是用js进行设置，
-                let div = createTag("div", {
-                    "height": "5px",
-                    "width": "5px",
-                    'background-color': "red",
-                    "position": "absolute",
-                    "left": `${x-3}px`,
-                    "top": `${y-3}px`
-                });
-                canvas.appendChild(div);
+        //设置画布的宽,高
+        function setCanvasHeight() {
+            var pageWidth = document.documentElement.clientWidth;
+            var pageHeight = document.documentElement.clientHeight;
+            canvas.width = pageWidth;
+            canvas.height = pageHeight;
+        }
+
+        function drawCircle(x, y, radius) {
+            context.beginPath();
+            context.arc(x, y, radius, 0, Math.PI * 2);
+            context.stroke();
+        }
+
+
+        function drawLine(x1, y1, x2, y2) {
+            context.beginPath();
+            context.moveTo(x1, y1);
+            // context.lineWidth = 5;
+            context.lineTo(x2, y2);
+            context.stroke();
+            context.closePath();
+        }
+        var using = false;
+        var lastPoint = {
+            x: undefined,
+            y: undefined
+        }
+        canvas.onmousemove = function(event) {
+            var x = event.clientX;
+            var y = event.clientY;
+            if (usingEraser) {
+                using = true;
+                context.clearRect(x, y, 10 - 5, 10 - 5);
             } else {
+                if (using) {
+                    var newPoint = {
+                        "x": x,
+                        "y": y
+                    };
+                    drawLine(lastPoint.x, lastPoint.y, newPoint.x, newPoint.y);
 
+                    //更新现在的最后一个点!!!!
+                    lastPoint = newPoint;
+                }
             }
-        };
-        document.onmouseup = function(event) {
-            painting = false;
+        }
+
+        canvas.onmousedown = function() {
+            var x = event.clientX;
+            var y = event.clientY;
+
+            if (usingEraser) { //开启
+                if (using) {
+                    context.clearRect(x, y, 10 - 5, 10 - 5);
+                }
+            } else { //没有开启橡皮擦的功能，就是在作画
+                using = true;
+                lastPoint = {
+                    "x": x,
+                    "y": y
+                }
+            }
+        }
+        canvas.onmouseup = function() {
+            using = false;
+        }
+
+        // 橡皮差功能开启
+        var usingEraser = false;
+        eraser.onclick = function() {
+            //点击两次就会取得相同的结果
+            usingEraser = !usingEraser;
         }
     </script>
 </body>
