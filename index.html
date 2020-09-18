@@ -3,27 +3,29 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no,maximum-scale=1.0,minimum-scable=1.0">
-    <style>
-        #canvas {
-            background-color: green;
-            display: block;
-            /* height: 100vh; */
-        }
-        
-        button {
-            position: fixed;
-            left: 0;
-            bottom: 0;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <!-- 引入图标链接 -->
+    <link rel="stylesheet" href="css/index.css">
+    <script src="https://at.alicdn.com/t/font_2078521_www8y0a0aph.js"></script>
 </head>
 
 <body>
+    <div class="actions">
+        <svg id="pen" class="icon" aria-hidden="true">
+            <use xlink:href="#icon-pen"></use>
+        </svg>
+        <svg id="eraser" class="icon" aria-hidden="true">
+            <use xlink:href="#icon-eraser"></use>
+        </svg>
+    </div>
+    <ul class="colors">
+        <li id="red" class="red active"></li>
+        <li id="green" class="green"></li>
+        <li id="blue" class="blue" ></li>
+    </ul>
     <canvas id="canvas">
       
   </canvas>
-    <button id="eraser">橡皮擦</button>
     <script src="js/index.js"></script>
 </body>
 

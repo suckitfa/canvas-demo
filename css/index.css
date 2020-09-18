@@ -1,0 +1,72 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+body {
+    overflow: hidden;
+}
+#canvas {
+    /* background-color: green; */
+    display: block;
+}
+
+button {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+}
+
+/* 图标引入的样式 */
+.icon {
+    width: 1em;
+    height: 1em;
+    vertical-align: -0.15em;
+    fill: currentColor;
+    overflow: hidden;
+}
+
+.actions svg {
+    width: 1.5em;
+    height: 1.5em;
+    padding: 20px;
+    transition: all 0.3s;
+    margin: 0 10px;
+}
+
+.actions svg.active {
+    fill: red;
+    transform: scale(1.2);
+}
+
+.colors {
+    position: fixed;
+    left: 30px;
+    top: 50px;
+}
+
+.colors>li {
+    width: 20px;
+    height: 20px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
+    border-radius: 50%;
+    list-style: none;
+    margin: 10px 0;
+    transition: all 0.3s;
+}
+
+li.active {
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.95);
+    text-transform: scale(12);
+}
+
+.red {
+    background-color: red;
+}
+
+.blue {
+    background-color: blue;
+}
+
+.green {
+    background-color: green;
+}
